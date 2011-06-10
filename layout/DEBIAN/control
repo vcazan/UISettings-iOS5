@@ -1,0 +1,9 @@
+Package: com.qwertyoruiop.uisettings5
+Name: UISettings-iOS5
+Depends: mobilesubstrate
+Version: 5.0
+Architecture: iphoneos-arm
+Description: Extensible Toggle Platform
+Maintainer: nothing2hide
+Author: nothing2hide
+Section: Tweaks
