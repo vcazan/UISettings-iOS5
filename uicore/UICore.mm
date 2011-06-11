@@ -41,6 +41,7 @@ void null__(id a) {};
 -(void)load;
 -(CGRect)autoRect;
 -(UIButton*)createToggleWithAction:(SEL)action title:(NSString*)title target:(id)target;
+-(UIImage*)iconWithName:(NSString*)name;
 @end
 static UIButton* triggerButton;
 @interface UISettingsCore : NSObject {
@@ -277,13 +278,19 @@ static UISettingsToggleController* sharedIInstance = nil;
 	NSAutoreleasePool* apool=[NSAutoreleasePool new];
 	id button=[self createToggleWithAction:selector title:nil target:target];
 	[self createLabelForButton:button text:title];
-	NSData *imageData = [NSData dataWithContentsOfFile:path];
-	UIImage *image = [UIImage imageWithData:imageData];
+	UIImage *image = [self iconWithName:path];
 	[button setImage:image forState:UIControlStateNormal];
 	[apool drain];
 }
 -(CGRect)autoRect {
 	toggleContainer.contentSize = CGSizeMake((10+56)*([toggleArray count]+1)+5, toggleContainer.frame.size.height);
 	return CGRectMake((10+56)*([toggleArray count])+5, 0, [objc_getClass("SBIconView") defaultIconImageSize].width, [objc_getClass("SBIconView") defaultIconImageSize].height);
+}
+-(UIImage*)iconWithName:(NSString*)name
+{
+	// Check for WinterBoard
+	UIImage* iconFromWinterboard=[UIImage imageNamed:[@"UISettings_" stringByAppendingString:name]];
+	if(iconFromWinterboard) return iconFromWinterboard;
+	return [UIImage imageWithContentsOfFile:[@"/Library/UISettings/Icons/" stringByAppendingString:name]];
 }
 @end
