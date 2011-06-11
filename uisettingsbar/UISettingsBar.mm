@@ -1,9 +1,11 @@
+#import "notify.h"
 #import <objc/runtime.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "BBWeeAppController-Protocol.h"
 #import "dlfcn.h"
 #define kHookVer "Bar-0.1"
+static BOOL initialized=NO;
 @interface Core : NSObject {
 	void* handler;
 }
@@ -93,11 +95,15 @@ static Hook* sHook=nil;
 
 - (void)viewWillAppear
 {
-        Core* SettingsHandler=[[Core alloc] initWithPath:@"/Library/UISettings/UICore/UICore.dylib"];
-        NSLog(@"Core bootstrapped");
-        Class UISettingsCore=[SettingsHandler CoreClass];
-	[[Hook sharedHook] setView:[self view]];
-	[[UISettingsCore sharedSettings] hook:nil];
+	notify_post("com.qwerty.uisettings.reload");
+	if(!initialized){	 
+        	Core* SettingsHandler=[[Core alloc] initWithPath:@"/Library/UISettings/UICore/UICore.dylib"];
+        	NSLog(@"Core bootstrapped");
+        	Class UISettingsCore=[SettingsHandler CoreClass];
+		[[Hook sharedHook] setView:[self view]];
+		[[UISettingsCore sharedSettings] hook:nil];
+		[SettingsHandler release];
+	}
 }
 
 - (UIView *)view
@@ -105,8 +111,7 @@ static Hook* sHook=nil;
     if (_view == nil)
     {
         _view = [[UIView alloc] initWithFrame:CGRectMake(2, 0, 316, [self viewHeight])];
-        
-        UIImage *bg = [[UIImage imageWithContentsOfFile:@"/System/Library/WeeAppPlugins/UISettingsBar.bundle/UISettingsBackground.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:71];
+        UIImage *bg = [UIImage imageWithContentsOfFile:@"/System/Library/WeeAppPlugins/UISettingsBar.bundle/UISettingsBackground.png"];
         UIImageView *bgView = [[UIImageView alloc] initWithImage:bg];
         bgView.frame = CGRectMake(0, 0, 316, [self viewHeight]);
         [_view addSubview:bgView];
@@ -118,7 +123,7 @@ static Hook* sHook=nil;
 
 - (float)viewHeight
 {
-    return 71.0f;
+    return 87.0f;
 }
 
 @end

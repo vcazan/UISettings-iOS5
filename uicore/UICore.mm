@@ -103,7 +103,7 @@ static NSMutableArray* kDylibList=nil;
 	NSAutoreleasePool *pool;
 	pool=[[NSAutoreleasePool alloc] init];
 	//CGRect frame;
-	toggleContainer = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 5, 316, 71)];
+	toggleContainer = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 6, 316, 85)];
 	toggleContainer.bounces = YES;
 	toggleContainer.contentSize = CGSizeMake(contentView.frame.size.width, contentView.frame.size.height);	
 	[contentView addSubview:toggleContainer];
@@ -263,13 +263,13 @@ static UISettingsToggleController* sharedIInstance = nil;
 	lbel.font = [UIFont boldSystemFontOfSize:(12.0)];
 	[toggleContainer addSubview:lbel];
 	CGPoint cer=button.center;
-	cer.y+=(button.size.height/2)-10;
+	cer.y+=(button.size.height/2)+6;
 	lbel.center=cer;
 	lbel.text = text;
 	lbel.numberOfLines = 1;
 	lbel.minimumFontSize=5.0;
 	lbel.adjustsFontSizeToFitWidth=YES;
-	lbel.alpha=0.6;
+	//lbel.alpha=0.6;
 	return lbel;
 }
 -(void)createToggleWithTitle:(NSString*)title andImage:(NSString*)path andSelector:(SEL)selector toTarget:(id)target
